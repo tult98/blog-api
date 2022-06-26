@@ -1,12 +1,18 @@
+import http from 'http'
+import express from 'express'
+import { DocumentNode } from 'graphql'
 import { ApolloServer } from 'apollo-server-express'
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core'
-import express from 'express'
-import http from 'http'
-import { typeDefs } from './schema'
-import { resolvers } from './resolvers'
-import { DocumentNode } from 'graphql'
+import { typeDefs } from './schema/typeDefs'
+import { resolvers } from './schema/resolvers'
 
-async function startApolloServer(typeDefs: DocumentNode, resolvers: any) {
+async function startApolloServer({
+  typeDefs,
+  resolvers,
+}: {
+  typeDefs: DocumentNode
+  resolvers: any
+}) {
   const app = express()
   const httpServer = http.createServer(app)
   const server = new ApolloServer({
@@ -24,4 +30,4 @@ async function startApolloServer(typeDefs: DocumentNode, resolvers: any) {
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
 }
 
-startApolloServer(typeDefs, resolvers)
+startApolloServer({ typeDefs, resolvers })

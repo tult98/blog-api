@@ -1,18 +1,27 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import Sequelize from 'sequelize'
-import configByEnvironment from '../config/config'
+import Sequelize, { Options } from 'sequelize'
+import * as configByEnvironment from '../config/config'
+
+export interface IConfig extends Options {
+  username: string
+  password: string
+  database: string
+  host: string
+  port: number
+}
 
 const basename = path.basename(__filename)
 const env = process.env.NODE_ENV || 'development'
 const db: Record<string, any> = {}
-const config = configByEnvironment[env]
 
-const sequelize = new Sequelize.Sequelize(
+const config = (configByEnvironment as Record<string, IConfig>)[env]
+
+export const sequelize = new Sequelize.Sequelize(
   config.database,
   config.username,
   config.password,
-  config
+  configByEnvironment
 )
 
 fs.readdirSync(__dirname)
@@ -35,7 +44,4 @@ Object.keys(db).forEach((modelName) => {
   }
 })
 
-db.sequelize = sequelize
-db.Sequelize = Sequelize
-
-module.exports = db
+export default db

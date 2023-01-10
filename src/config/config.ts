@@ -1,14 +1,6 @@
-import { Options } from 'sequelize'
+import { IConfig } from '../models'
 
-interface IConfig extends Options {
-  username: string
-  password: string
-  database: string
-  host: string
-  port: number
-}
-
-const configByEnvironment = {
+module.exports = {
   development: {
     username: process.env.DEV_DB_USERNAME ?? 'root',
     password: process.env.DEV_DB_PASSWORD ?? 'password',
@@ -35,4 +27,4 @@ const configByEnvironment = {
   },
 } as Record<string, IConfig>
 
-export default configByEnvironment
+// export default configByEnvironment

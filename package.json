@@ -18,7 +18,8 @@
     "@apollo/server": "^4.3.0",
     "graphql": "^16.6.0",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.28.0"
+    "sequelize": "^6.28.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.29.0",

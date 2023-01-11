@@ -1,4 +1,11 @@
-import { DataTypes, Model, Optional } from 'sequelize'
+import {
+  CreationOptional,
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
+  Model,
+} from 'sequelize'
+
 import { sequelize as sequelizeInstance } from '.'
 
 export const enum ROLE {
@@ -6,25 +13,16 @@ export const enum ROLE {
   ADMIN = 2,
 }
 
-export interface UserAttributes {
-  id: string
-  email: string
-  first_name: string
-  last_name: string
-  full_name: string
-  role: ROLE
-}
-
-export interface UserInput extends Optional<UserAttributes, 'id' | 'role'> {}
-export interface UserInstance extends Required<UserAttributes> {}
-
-class User extends Model<UserAttributes, UserInput> implements UserAttributes {
-  public id!: string
-  public email!: string
-  public first_name!: string
-  public last_name!: string
-  public full_name!: string
-  public role!: number
+// eslint-disable-next-line
+class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+  declare id: CreationOptional<string>
+  declare email: string
+  declare firstName: string
+  declare lastName: string
+  declare fullName: string
+  declare role: number
+  declare createdAt: CreationOptional<Date>
+  declare updatedAt: CreationOptional<Date>
 }
 
 User.init(
@@ -43,28 +41,27 @@ User.init(
         isEmail: true,
       },
     },
-    first_name: {
+    firstName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    last_name: {
+    lastName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    full_name: {
+    fullName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     role: {
-      type: DataTypes.TINYINT,
-      allowNull: false,
+      type: DataTypes.SMALLINT,
       defaultValue: ROLE.MEMBER,
+      allowNull: false,
     },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
-  {
-    sequelize: sequelizeInstance,
-    modelName: 'User',
-  }
+  { sequelize: sequelizeInstance, underscored: true }
 )
 
 export default User

@@ -47,6 +47,14 @@ module.exports = {
         allowNull: false,
         defaultValue: 1,
       },
+      created_at: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+      updated_at: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
     })
   },
 

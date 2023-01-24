@@ -1,7 +1,6 @@
 import { ApolloServer } from '@apollo/server'
 import { startStandaloneServer } from '@apollo/server/standalone'
-import { resolvers } from './schema/resolvers'
-import { typeDefs } from './schema/typeDefs'
+import { resolvers, typeDefs } from './graphql'
 
 async function startApolloServer({
   typeDefs,

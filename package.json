@@ -12,16 +12,18 @@
     "prepare": "husky install"
   },
   "keywords": [],
-  "author": "",
-  "description": "",
+  "author": "Tu Le Thanh",
+  "description": "Graphql server for my blog",
   "dependencies": {
     "@apollo/server": "^4.3.0",
+    "bcrypt": "^5.1.0",
     "graphql": "^16.6.0",
     "mysql2": "^2.3.3",
     "sequelize": "^6.28.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
     "esbuild": "^0.14.47",

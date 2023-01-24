@@ -13,6 +13,26 @@ export const enum ROLE {
   ADMIN = 2,
 }
 
+export interface UserInput {
+  email: string
+  firstName: string
+  lastName: string
+  fullName: string
+  password: string
+  confirmPassword: string
+}
+
+export interface UserInstance {
+  id: string
+  email: string
+  firstName: string
+  lastName: string
+  fullName: string
+  role: ROLE
+  createdAt: Date | string
+  updatedAt: Date | string
+}
+
 // eslint-disable-next-line
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare id: CreationOptional<string>
@@ -20,7 +40,8 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare firstName: string
   declare lastName: string
   declare fullName: string
-  declare role: number
+  declare role: CreationOptional<number>
+  declare password: string
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }
@@ -56,6 +77,10 @@ User.init(
     role: {
       type: DataTypes.SMALLINT,
       defaultValue: ROLE.MEMBER,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     createdAt: DataTypes.DATE,

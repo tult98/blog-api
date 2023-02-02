@@ -1,3 +1,3 @@
 export const mutations = `#graphql
-  register(user: UserCreateInput!): User!
+  register(email: String!, firstName: String!, lastName: String!, fullName: String!, password: String!, confirmPassword: String!): User!
 `

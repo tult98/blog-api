@@ -33,6 +33,16 @@ export interface UserInstance {
   updatedAt: Date | string
 }
 
+export interface LoginInput {
+  email: string
+  password: string
+}
+
+export interface LoginToken {
+  accessToken: string
+  refreshToken: string
+}
+
 // eslint-disable-next-line
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare id: CreationOptional<string>

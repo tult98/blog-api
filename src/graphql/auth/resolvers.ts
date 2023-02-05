@@ -1,27 +1,41 @@
 import bcrypt from 'bcrypt'
 import { GraphQLError } from 'graphql'
+import jwt from 'jsonwebtoken'
 import User, { UserInput } from '../../models/user'
+import { LoginInput, LoginToken } from './../../models/user'
+import {
+  BAD_USER_INPUT,
+  INVALID_INPUT_MESSAGE,
+  isValidEmail,
+  isValidPassword,
+} from './../../utils/validators'
 
 const SALT_ROUNDS = 10
-const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/
-
-const queries = {}
 
 const register = async (_: any, args: UserInput): Promise<User> => {
   const { email, firstName, lastName, fullName, password, confirmPassword } =
     args
-  if (password !== confirmPassword) {
-    throw new GraphQLError('Invalid argument value', {
+  if (!isValidEmail(email)) {
+    throw new GraphQLError(INVALID_INPUT_MESSAGE, {
       extensions: {
-        code: 'BAD_USER_INPUT',
+        code: BAD_USER_INPUT,
+        field: 'email',
+      },
+    })
+  }
+
+  if (password !== confirmPassword) {
+    throw new GraphQLError(INVALID_INPUT_MESSAGE, {
+      extensions: {
+        code: BAD_USER_INPUT,
         field: 'confirmPassword',
       },
     })
   }
-  if (!PASSWORD_REGEX.test(password)) {
+  if (!isValidPassword(password)) {
     throw new GraphQLError('Password is too weak', {
       extensions: {
-        code: 'BAD_USER_INPUT',
+        code: BAD_USER_INPUT,
         field: 'password',
       },
     })
@@ -31,7 +45,7 @@ const register = async (_: any, args: UserInput): Promise<User> => {
   if (userInstance) {
     throw new GraphQLError('That email already registered.', {
       extensions: {
-        code: 'BAD_USER_INPUT',
+        code: BAD_USER_INPUT,
         field: 'email',
       },
     })
@@ -49,8 +63,69 @@ const register = async (_: any, args: UserInput): Promise<User> => {
   return userInstance
 }
 
+const login = async (_: any, args: LoginInput): Promise<LoginToken> => {
+  const { email, password } = args
+  if (!isValidEmail(email)) {
+    throw new GraphQLError(INVALID_INPUT_MESSAGE, {
+      extensions: {
+        code: BAD_USER_INPUT,
+        field: 'email',
+      },
+    })
+  }
+
+  if (!isValidPassword(password)) {
+    throw new GraphQLError(INVALID_INPUT_MESSAGE, {
+      extensions: {
+        code: BAD_USER_INPUT,
+        field: 'password',
+      },
+    })
+  }
+
+  const user = await User.findOne({ where: { email } })
+  if (!user) {
+    throw new GraphQLError('Email or password is incorrect', {
+      extensions: {
+        code: BAD_USER_INPUT,
+      },
+    })
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password)
+  if (!isMatch) {
+    throw new GraphQLError('Email or password is incorrect', {
+      extensions: {
+        code: BAD_USER_INPUT,
+      },
+    })
+  }
+
+  const payload = { id: user.id, role: user.role }
+  const accessToken = jwt.sign(
+    payload,
+    process.env.ACCESS_TOKEN_PRIVATE_KEY as string, // must have
+    {
+      expiresIn: '15m',
+    }
+  )
+  const refreshToken = jwt.sign(
+    payload,
+    process.env.REFRESH_TOKEN_PRIVATE_KEY as string, // must have
+    {
+      expiresIn: '30d',
+    }
+  )
+
+  return { accessToken, refreshToken }
+}
+
 const mutations = {
   register,
+}
+
+const queries = {
+  login,
 }
 
 export const resolvers = { queries, mutations }

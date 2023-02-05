@@ -9,4 +9,9 @@ export const types = `
     createdAt: Date!
     updatedAt: Date!
   }
+
+  type LoginToken {
+    accessToken: String!,
+    refreshToken: String!
+  }
 `

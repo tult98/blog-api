@@ -1,8 +1,7 @@
 import bcrypt from 'bcrypt'
 import { GraphQLError } from 'graphql'
 import jwt from 'jsonwebtoken'
-import User, { UserInput, UserInstance } from '../../models/user'
-import { IContext } from '../../utils/graphql'
+import User, { UserInput } from '../../models/user'
 import { LoginInput, LoginToken } from './../../models/user'
 import {
   BAD_USER_INPUT,
@@ -121,22 +120,12 @@ const login = async (_: any, args: LoginInput): Promise<LoginToken> => {
   return { accessToken, refreshToken }
 }
 
-const users = async (
-  _: any,
-  __: any,
-  contextValue: IContext
-): Promise<UserInstance[]> => {
-  console.log('contextValue: ', contextValue)
-  return await User.findAll()
-}
-
 const mutations = {
   register,
 }
 
 const queries = {
   login,
-  users,
 }
 
 export const resolvers = { queries, mutations }

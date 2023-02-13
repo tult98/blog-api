@@ -16,6 +16,7 @@
   "description": "Graphql server for my blog",
   "dependencies": {
     "@apollo/server": "^4.3.0",
+    "@elastic/elasticsearch": "^8.6.0",
     "bcrypt": "^5.1.0",
     "graphql": "^16.6.0",
     "jsonwebtoken": "^9.0.0",

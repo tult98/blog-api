@@ -1,6 +1,7 @@
 import { ApolloServer } from '@apollo/server'
 import { startStandaloneServer } from '@apollo/server/standalone'
 import { resolvers, typeDefs } from './graphql'
+import { checkConnection } from './services/eslastic'
 import { getUserFromToken, IContext } from './utils/graphql'
 
 async function startApolloServer({
@@ -27,6 +28,7 @@ async function startApolloServer({
     listen: { port: 4000 },
   })
 
+  await checkConnection()
   console.log(`🚀  Server ready at: ${url}`)
 }
 

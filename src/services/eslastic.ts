@@ -7,12 +7,12 @@ export const client = new Client({
 })
 
 export const checkConnection = async () => {
-  console.log('Checking connection to Elasticsearch...')
+  console.log('❓  Checking connection to Elasticsearch...')
   try {
     await client.cluster.health({})
-    console.log('Connect to Elasticsearch successful.')
+    console.log('✅  Connect to Elasticsearch successful.')
   } catch (error) {
-    console.log('Cannot connect to Elasticsearch.')
+    console.log('⚠️   Cannot connect to Elasticsearch.')
     console.log(error)
   }
 }

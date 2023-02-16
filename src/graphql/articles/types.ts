@@ -3,6 +3,7 @@ export const types = `#graphql
     id: ID!
     title: String!
     slug: String!
+    thumbnail: String!
     preface: String!
     body: String!
     category: String

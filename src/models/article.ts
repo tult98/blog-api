@@ -10,6 +10,8 @@ export interface ArticleInput {
 export interface ArticleDocumentInput extends ArticleInput {
   id: string
   slug: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface ArticleDocument {

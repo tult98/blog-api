@@ -27,6 +27,8 @@ const createArticle = async (
       body,
       category,
       tags,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
   })
 

@@ -1,14 +1,14 @@
 export const types = `#graphql
   type Article {
-    id: ID!
-    title: String!
-    slug: String!
-    thumbnail: String!
-    preface: String!
-    body: String!
+    id: ID
+    title: String
+    slug: String
+    thumbnail: String
+    preface: String
+    body: String
     category: String
-    tags: [String!]!
-    createdAt: Date!
-    updatedAt: Date!
+    tags: [String!]
+    createdAt: Date
+    updatedAt: Date
   }
 `

@@ -13,6 +13,7 @@ module.exports = {
       index: 'articles',
       mappings: {
         properties: {
+          id: { type: 'keyword' },
           title: { type: 'text' },
           slug: { type: 'text' },
           preface: { type: 'text' },

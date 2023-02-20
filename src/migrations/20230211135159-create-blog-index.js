@@ -18,9 +18,9 @@ module.exports = {
           slug: { type: 'text' },
           preface: { type: 'text' },
           thumbnail: { type: 'text' },
-          // NOTE: there are tags field where its value should be an array of string
           body: { type: 'text' },
           category: { type: 'keyword' },
+          tags: { type: 'keyword' },
           createdAt: { type: 'date' },
           updatedAt: { type: 'date' },
         },

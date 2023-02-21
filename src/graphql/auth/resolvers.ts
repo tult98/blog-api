@@ -106,14 +106,14 @@ const login = async (_: any, args: LoginInput): Promise<LoginToken> => {
     payload,
     process.env.ACCESS_TOKEN_PRIVATE_KEY as string, // must have
     {
-      expiresIn: '15m',
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRE_TIME ?? '15m',
     }
   )
   const refreshToken = jwt.sign(
     payload,
     process.env.REFRESH_TOKEN_PRIVATE_KEY as string, // must have
     {
-      expiresIn: '30d',
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRE_TIME ?? '30d',
     }
   )
 

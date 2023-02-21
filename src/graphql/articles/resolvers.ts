@@ -1,10 +1,12 @@
 import { v4 as uuidv4 } from 'uuid'
+import { ROLE } from '../../models/user'
 import { client } from '../../services/eslastic'
 import {
   ArticleDocument,
   ArticleDocumentInput,
   ArticleInput,
 } from './../../models/article'
+import { authenticated, authorized } from './../../utils/graphql'
 
 const ARTICLE_INDEX = 'articles'
 
@@ -45,7 +47,7 @@ const createArticle = async (
 const queries = {}
 
 const mutations = {
-  createArticle,
+  createArticle: authenticated(authorized(ROLE.ADMIN)(createArticle)),
 }
 
 export const resolvers = { queries, mutations }

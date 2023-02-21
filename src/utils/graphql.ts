@@ -1,4 +1,6 @@
+import { GraphQLError } from 'graphql'
 import jwt from 'jsonwebtoken'
+import { ROLE } from '../models/user'
 export interface GraphqlSubmodule {
   types: string
   queries: string
@@ -28,3 +30,37 @@ export const getUserFromToken = async (
 
   return payload
 }
+
+export const authenticated =
+  (next: any) => (parent: any, args: any, context: IContext, info: any) => {
+    if (!context.user) {
+      throw new GraphQLError('Unauthenticated', {
+        extensions: {
+          code: 'BAD_REQUEST',
+          http: {
+            status: 401,
+          },
+        },
+      })
+    }
+
+    return next(parent, args, context, info)
+  }
+
+export const authorized =
+  (role: ROLE) =>
+  (next: any) =>
+  (parent: any, args: any, context: IContext, info: any) => {
+    if (context.user?.role !== role) {
+      throw new GraphQLError('Unauthorized', {
+        extensions: {
+          code: 'BAD_REQUEST',
+          http: {
+            status: 403,
+          },
+        },
+      })
+    }
+
+    return next(parent, args, context, info)
+  }

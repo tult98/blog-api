@@ -89,7 +89,7 @@ const queries = {
 
 const mutations = {
   createArticle: authenticated(authorized(ROLE.ADMIN)(createArticle)),
-  updateArticle,
+  updateArticle: authenticated(authorized(ROLE.ADMIN)(updateArticle)),
 }
 
 export const resolvers = { queries, mutations }

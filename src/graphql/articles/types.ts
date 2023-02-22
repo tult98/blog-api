@@ -11,4 +11,13 @@ export const types = `#graphql
     createdAt: Date
     updatedAt: Date
   }
+
+  type Meta {
+    total: Int
+  }
+
+  type Articles {
+    articles: [Article!]!,
+    meta: Meta!
+  }
 `

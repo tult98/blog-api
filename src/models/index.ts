@@ -9,6 +9,10 @@ export interface IConfig extends Options {
   port: number
 }
 
+export interface IMeta {
+  total: number
+}
+
 // const basename = path.basename(__filename)
 const env = process.env.NODE_ENV || 'development'
 const db: Record<string, any> = {}

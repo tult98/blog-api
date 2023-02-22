@@ -7,6 +7,10 @@ export interface ArticleInput {
   tags: string[]
 }
 
+export interface UpdateArticleInput extends ArticleInput {
+  id: string
+}
+
 export interface ArticleDocumentInput extends ArticleInput {
   id: string
   slug: string

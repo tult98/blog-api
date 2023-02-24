@@ -75,15 +75,6 @@ const login = async (_: any, args: LoginInput): Promise<LoginToken> => {
     })
   }
 
-  if (!isValidPassword(password)) {
-    throw new GraphQLError(INVALID_INPUT_MESSAGE, {
-      extensions: {
-        code: BAD_USER_INPUT,
-        field: 'password',
-      },
-    })
-  }
-
   const user = await User.findOne({ where: { email } })
   if (!user) {
     throw new GraphQLError('Email or password is incorrect', {

@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt'
 import { GraphQLError } from 'graphql'
 import jwt from 'jsonwebtoken'
 import User, { UserInput } from '../../models/user'
+import { ServerErrorCode } from '../../utils/errors'
 import { LoginInput, LoginToken } from './../../models/user'
 import {
   BAD_USER_INPUT,
@@ -18,7 +19,7 @@ const register = async (_: any, args: UserInput): Promise<User> => {
   if (!isValidEmail(email)) {
     throw new GraphQLError(INVALID_INPUT_MESSAGE, {
       extensions: {
-        code: BAD_USER_INPUT,
+        code: ServerErrorCode.BAD_USER_INPUT,
         field: 'email',
       },
     })
@@ -27,7 +28,7 @@ const register = async (_: any, args: UserInput): Promise<User> => {
   if (password !== confirmPassword) {
     throw new GraphQLError(INVALID_INPUT_MESSAGE, {
       extensions: {
-        code: BAD_USER_INPUT,
+        code: ServerErrorCode.BAD_USER_INPUT,
         field: 'confirmPassword',
       },
     })
@@ -35,7 +36,7 @@ const register = async (_: any, args: UserInput): Promise<User> => {
   if (!isValidPassword(password)) {
     throw new GraphQLError('Password is too weak', {
       extensions: {
-        code: BAD_USER_INPUT,
+        code: ServerErrorCode.BAD_USER_INPUT,
         field: 'password',
       },
     })
@@ -45,7 +46,7 @@ const register = async (_: any, args: UserInput): Promise<User> => {
   if (userInstance) {
     throw new GraphQLError('That email already registered.', {
       extensions: {
-        code: BAD_USER_INPUT,
+        code: ServerErrorCode.BAD_USER_INPUT,
         field: 'email',
       },
     })

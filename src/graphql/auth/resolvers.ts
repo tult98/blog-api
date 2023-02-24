@@ -44,7 +44,7 @@ const register = async (_: any, args: UserInput): Promise<User> => {
 
   let userInstance = await User.findOne({ where: { email } })
   if (userInstance) {
-    throw new GraphQLError('That email already registered.', {
+    throw new GraphQLError('The user already exists by this email.', {
       extensions: {
         code: ServerErrorCode.BAD_USER_INPUT,
         field: 'email',

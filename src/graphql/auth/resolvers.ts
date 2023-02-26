@@ -5,8 +5,8 @@ import jwt from 'jsonwebtoken'
 import User, { UserInput } from '../../models/user'
 import { ServerErrorCode } from '../../utils/errors'
 import { LoginInput, LoginToken } from './../../models/user'
+import { authenticated, IContext } from './../../utils/graphql'
 import {
-  BAD_USER_INPUT,
   INVALID_INPUT_MESSAGE,
   isValidEmail,
   isValidPassword,
@@ -70,7 +70,7 @@ const login = async (_: any, args: LoginInput): Promise<LoginToken> => {
   if (!isValidEmail(email)) {
     throw new GraphQLError(INVALID_INPUT_MESSAGE, {
       extensions: {
-        code: BAD_USER_INPUT,
+        code: ServerErrorCode.BAD_USER_INPUT,
         field: 'email',
       },
     })
@@ -80,7 +80,7 @@ const login = async (_: any, args: LoginInput): Promise<LoginToken> => {
   if (!user) {
     throw new GraphQLError('Email or password is incorrect', {
       extensions: {
-        code: BAD_USER_INPUT,
+        code: ServerErrorCode.BAD_USER_INPUT,
       },
     })
   }
@@ -89,7 +89,7 @@ const login = async (_: any, args: LoginInput): Promise<LoginToken> => {
   if (!isMatch) {
     throw new GraphQLError('Email or password is incorrect', {
       extensions: {
-        code: BAD_USER_INPUT,
+        code: ServerErrorCode.BAD_USER_INPUT,
       },
     })
   }
@@ -123,12 +123,35 @@ const login = async (_: any, args: LoginInput): Promise<LoginToken> => {
   }
 }
 
+const me = async (
+  _: unknown,
+  __: unknown,
+  context: IContext
+): Promise<User> => {
+  const userId = context.user?.id
+  const userInstance = await User.findByPk(userId)
+
+  if (!userInstance) {
+    throw new GraphQLError('Not found logged in user', {
+      extensions: {
+        code: ServerErrorCode.BAD_REQUEST,
+        http: {
+          status: 400,
+        },
+      },
+    })
+  }
+
+  return userInstance
+}
+
 const mutations = {
   register,
 }
 
 const queries = {
   login,
+  me: authenticated(me),
 }
 
 export const resolvers = { queries, mutations }

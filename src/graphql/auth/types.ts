@@ -13,5 +13,6 @@ export const types = `#graphql
   type LoginToken {
     accessToken: String!,
     refreshToken: String!
+    expiresAt: Date!
   }
 `

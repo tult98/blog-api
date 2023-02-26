@@ -41,6 +41,7 @@ export interface LoginInput {
 export interface LoginToken {
   accessToken: string
   refreshToken: string
+  expiresAt: Date
 }
 
 // eslint-disable-next-line

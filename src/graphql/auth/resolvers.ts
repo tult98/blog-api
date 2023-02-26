@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import { addMinutes } from 'date-fns'
 import { GraphQLError } from 'graphql'
 import jwt from 'jsonwebtoken'
 import User, { UserInput } from '../../models/user'
@@ -98,18 +99,28 @@ const login = async (_: any, args: LoginInput): Promise<LoginToken> => {
     payload,
     process.env.ACCESS_TOKEN_PRIVATE_KEY as string, // must have
     {
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRE_TIME ?? '15m',
+      expiresIn: Number(process.env.ACCESS_TOKEN_EXPIRE_TIME ?? 15) * 60 * 1000, // milliseconds
     }
   )
   const refreshToken = jwt.sign(
     payload,
     process.env.REFRESH_TOKEN_PRIVATE_KEY as string, // must have
     {
-      expiresIn: process.env.REFRESH_TOKEN_EXPIRE_TIME ?? '30d',
+      expiresIn:
+        Number(process.env.REFRESH_TOKEN_EXPIRE_TIME ?? 24 * 60 * 30) *
+        60 *
+        1000, // milliseconds
     }
   )
 
-  return { accessToken, refreshToken }
+  return {
+    accessToken,
+    refreshToken,
+    expiresAt: addMinutes(
+      Date.now(),
+      Number(process.env.ACCESS_TOKEN_EXPIRE_TIME ?? 15)
+    ),
+  }
 }
 
 const mutations = {

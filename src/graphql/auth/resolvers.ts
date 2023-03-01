@@ -123,6 +123,31 @@ const login = async (_: any, args: LoginInput): Promise<LoginToken> => {
   }
 }
 
+const getNewToken = async (
+  _: any,
+  { refreshToken }: { refreshToken: string }
+): Promise<LoginToken> => {
+  // verify refresh token
+  const payload = await jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_PRIVATE_KEY as string
+  )
+  // in case refreshToken is valid
+  const newAccessToken = jwt.sign(
+    payload,
+    process.env.ACCESS_TOKEN_PRIVATE_KEY as string
+  )
+
+  return {
+    accessToken: newAccessToken,
+    refreshToken,
+    expiresAt: addMinutes(
+      Date.now(),
+      Number(process.env.ACCESS_TOKEN_EXPIRE_TIME ?? 15)
+    ),
+  }
+}
+
 const me = async (
   _: unknown,
   __: unknown,
@@ -152,6 +177,7 @@ const mutations = {
 const queries = {
   login,
   me: authenticated(me),
+  getNewToken,
 }
 
 export const resolvers = { queries, mutations }

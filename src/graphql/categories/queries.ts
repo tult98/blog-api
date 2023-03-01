@@ -1,3 +1,3 @@
 export const queries = `#graphql
-getCategories: [Category!]!
+getCategories: Categories!
 `

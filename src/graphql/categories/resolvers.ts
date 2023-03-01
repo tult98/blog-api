@@ -45,7 +45,9 @@ const getCategories = async () => {
     index: CATEGORY_INDEX,
   })
 
-  const categories = results.hits.hits.map((document) => document._source)
+  const categories = results.hits.hits.map((document) => {
+    return document._source
+  })
   return {
     categories,
     // @ts-expect-error

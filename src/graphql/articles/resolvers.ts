@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from 'uuid'
+import { IMeta } from '../../models'
 import { ROLE } from '../../models/user'
 import { authenticated, authorized } from '../../utils/graphql'
 import {
   ArticleDocument,
-  ArticleDocumentInput,
   ArticleInput,
   UpdateArticleInput,
 } from './../../models/article'
@@ -14,11 +14,11 @@ const ARTICLE_INDEX = 'articles'
 const createArticle = async (
   _: any,
   args: ArticleInput
-): Promise<ArticleDocument> => {
+): Promise<Partial<ArticleDocument>> => {
   const { title, thumbnail, preface, body, category, tags } = args
   const slug = title.split(' ').join('-')
   const id = uuidv4()
-  const article = await client.create<ArticleDocumentInput>({
+  const article = await client.create<ArticleDocument>({
     id,
     index: ARTICLE_INDEX,
     document: {
@@ -48,7 +48,7 @@ const createArticle = async (
 const updateArticle = async (
   _: any,
   args: UpdateArticleInput
-): Promise<ArticleDocument> => {
+): Promise<Partial<ArticleDocument>> => {
   const { id, ...rest } = args
   const results = await client.update<ArticleDocument>({
     index: ARTICLE_INDEX,
@@ -69,7 +69,10 @@ const updateArticle = async (
   }
 }
 
-const getArticles = async () => {
+const getArticles = async (): Promise<{
+  articles: (ArticleDocument | undefined)[]
+  meta: IMeta
+}> => {
   const results = await client.search<ArticleDocument>({
     index: ARTICLE_INDEX,
   })

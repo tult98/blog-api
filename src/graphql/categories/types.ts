@@ -16,4 +16,8 @@ export const types = `#graphql
     categories: [Category!]!
     meta: Meta!
   }
+
+  type DeletedCategory {
+    id: ID
+  }
 `

@@ -3,18 +3,9 @@ export interface CategoryInput {
   description: string
 }
 
-export interface CategoryDocumentInput extends CategoryInput {
+export interface CategoryDocument extends CategoryInput {
   id: string
   slug: string
   createdAt: Date
   updatedAt: Date
-}
-
-export interface CategoryDocument {
-  id?: string
-  title?: string
-  slug?: string
-  description?: string
-  createdAt?: Date
-  updatedAt?: String
 }

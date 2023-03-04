@@ -9,3 +9,9 @@ export interface CategoryDocument extends CategoryInput {
   createdAt: Date
   updatedAt: Date
 }
+
+export interface CategoryFilter {
+  id?: string
+  slug?: string
+  description?: string
+}

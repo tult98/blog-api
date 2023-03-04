@@ -53,6 +53,37 @@ const getCategories = async () => {
   }
 }
 
+const getCategoryBySlug = async (
+  _: any,
+  { slug }: { slug: string }
+): Promise<Partial<CategoryDocument> | undefined> => {
+  const results = await client.search<CategoryDocument>({
+    index: CATEGORY_INDEX,
+    query: {
+      match: {
+        slug: {
+          operator: 'AND',
+          query: slug,
+        },
+      },
+    },
+  })
+
+  if (!(results.hits.total as SearchTotalHits).value) {
+    throw new GraphQLError('Not found the category', {
+      extensions: {
+        code: ServerErrorCode.BAD_REQUEST,
+        http: {
+          status: 400,
+        },
+      },
+    })
+  }
+
+  // should always return one document
+  return results.hits.hits[0]._source
+}
+
 const deleteCategory = async (
   _: any,
   { id }: { id: string }
@@ -94,6 +125,7 @@ const mutations = {
 
 const queries = {
   getCategories,
+  getCategoryBySlug,
 }
 
 export const resolvers = {

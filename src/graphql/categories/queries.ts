@@ -1,3 +1,4 @@
 export const queries = `#graphql
-getCategories: Categories!
+  getCategories: Categories!
+  getCategoryBySlug(slug: String!): Category
 `

@@ -20,4 +20,11 @@ export const types = `#graphql
   type DeletedCategory {
     id: ID
   }
+
+  type CategoryFilter {
+    id: String
+    title: String
+    slug: String
+    description: String
+  }
 `

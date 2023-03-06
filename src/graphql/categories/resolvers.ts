@@ -11,9 +11,9 @@ const CATEGORY_INDEX = 'categories'
 
 const createCategory = async (
   _: any,
-  args: CategoryInput
+  { input }: { input: CategoryInput }
 ): Promise<Partial<CategoryDocument>> => {
-  const { title, description } = args
+  const { title, description } = input
   const id = uuidv4()
   const slug = title.toLowerCase().split(' ').join('-')
   const category = await client.create<CategoryDocument>({
@@ -120,9 +120,32 @@ const deleteCategory = async (
   }
 }
 
+const updateCategory = async (
+  _: any,
+  { id, input }: { id: string; input: CategoryInput }
+): Promise<Partial<CategoryDocument> | undefined> => {
+  const results = await client.update<CategoryDocument>({
+    index: CATEGORY_INDEX,
+    refresh: true,
+    id,
+    doc: {
+      ...input,
+      slug: input.title.toLowerCase().split(' ').join('-'),
+    },
+  })
+
+  const getResults = await client.get<CategoryDocument>({
+    index: CATEGORY_INDEX,
+    id: results._id,
+  })
+
+  return getResults._source
+}
+
 const mutations = {
   createCategory: authenticated(authorized(ROLE.ADMIN)(createCategory)),
   deleteCategory: authenticated(authorized(ROLE.ADMIN)(deleteCategory)),
+  updateCategory: authenticated(authorized(ROLE.ADMIN)(updateCategory)),
 }
 
 const queries = {

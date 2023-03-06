@@ -1,4 +1,5 @@
 export const mutations = `#graphql
-  createCategory(title: String!, description: String!): Category!
-  deleteCategory(id: String!): DeletedCategory
+  createCategory(input: CategoryInput): Category
+  updateCategory(id: ID!, input: CategoryInput): Category
+  deleteCategory(id: ID!): DeletedCategory
 `

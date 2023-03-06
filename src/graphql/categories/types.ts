@@ -27,4 +27,9 @@ export const types = `#graphql
     slug: String
     description: String
   }
+
+  input CategoryInput {
+    title: String!
+    description: String!
+  }
 `

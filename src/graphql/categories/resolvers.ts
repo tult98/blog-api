@@ -61,11 +61,8 @@ const getCategoryBySlug = async (
   const results = await client.search<CategoryDocument>({
     index: CATEGORY_INDEX,
     query: {
-      match: {
-        slug: {
-          operator: 'AND',
-          query: slug,
-        },
+      term: {
+        'slug.keyword': slug,
       },
     },
   })

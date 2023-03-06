@@ -19,6 +19,7 @@ const createCategory = async (
   const category = await client.create<CategoryDocument>({
     id,
     index: CATEGORY_INDEX,
+    refresh: true,
     document: {
       id,
       title,
@@ -110,6 +111,7 @@ const deleteCategory = async (
 
   const deleteResults = await client.delete({
     index: CATEGORY_INDEX,
+    refresh: true,
     id,
   })
 

@@ -62,7 +62,7 @@ const getCategoryBySlug = async (
     index: CATEGORY_INDEX,
     query: {
       term: {
-        slug,
+        'slug.keyword': slug,
       },
     },
   })

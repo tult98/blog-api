@@ -70,7 +70,7 @@ const getCategoryBySlug = async (
   if (!(results.hits.total as SearchTotalHits).value) {
     throw new GraphQLError('Not found the category', {
       extensions: {
-        code: ServerErrorCode.BAD_REQUEST,
+        code: ServerErrorCode.NOT_FOUND,
         http: {
           status: 404,
         },

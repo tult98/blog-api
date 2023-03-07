@@ -4,6 +4,7 @@ import { GraphQLError, GraphQLErrorOptions } from 'graphql'
 enum CustomServerErrorCode {
   UNAUTHENTICATED = 'UNAUTHENTICATED',
   FORBIDDEN = 'FORBIDDEN',
+  NOT_FOUND = 'NOT_FOUND',
 }
 
 export const ServerErrorCode = {

@@ -72,7 +72,7 @@ const getCategoryBySlug = async (
       extensions: {
         code: ServerErrorCode.BAD_REQUEST,
         http: {
-          status: 400,
+          status: 404,
         },
       },
     })

@@ -15,7 +15,7 @@ module.exports = {
         properties: {
           id: { type: 'keyword' },
           title: { type: 'text' },
-          slug: { type: 'text' },
+          slug: { type: 'keyword' },
           preface: { type: 'text' },
           thumbnail: { type: 'text' },
           body: { type: 'text' },

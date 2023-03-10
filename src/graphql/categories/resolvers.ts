@@ -9,10 +9,7 @@ import { CategoryDocument, CategoryInput } from './../../models/category'
 
 const CATEGORY_INDEX = 'categories'
 
-const createCategory = async (
-  _: any,
-  { input }: { input: CategoryInput }
-): Promise<Partial<CategoryDocument>> => {
+const createCategory = async (_: any, { input }: { input: CategoryInput }): Promise<Partial<CategoryDocument>> => {
   const { title, description } = input
   const id = uuidv4()
   const slug = title.toLowerCase().split(' ').join('-')
@@ -82,10 +79,7 @@ const getCategoryBySlug = async (
   return results.hits.hits[0]._source
 }
 
-const deleteCategory = async (
-  _: any,
-  { id }: { id: string }
-): Promise<{ id: string }> => {
+const deleteCategory = async (_: any, { id }: { id: string }): Promise<{ id: string }> => {
   const searchResults = await client.search<CategoryDocument>({
     index: CATEGORY_INDEX,
     query: {

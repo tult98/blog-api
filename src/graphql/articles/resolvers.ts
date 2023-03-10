@@ -2,19 +2,12 @@ import { v4 as uuidv4 } from 'uuid'
 import { IMeta } from '../../models'
 import { ROLE } from '../../models/user'
 import { authenticated, authorized } from '../../utils/graphql'
-import {
-  ArticleDocument,
-  ArticleInput,
-  UpdateArticleInput,
-} from './../../models/article'
+import { ArticleDocument, ArticleInput, UpdateArticleInput } from './../../models/article'
 import { client } from './../../services/eslastic'
 
 const ARTICLE_INDEX = 'articles'
 
-const createArticle = async (
-  _: any,
-  args: ArticleInput
-): Promise<Partial<ArticleDocument>> => {
+const createArticle = async (_: any, args: ArticleInput): Promise<Partial<ArticleDocument>> => {
   const { title, thumbnail, preface, body, category, tags } = args
   const slug = title.split(' ').join('-')
   const id = uuidv4()
@@ -45,10 +38,7 @@ const createArticle = async (
   }
 }
 
-const updateArticle = async (
-  _: any,
-  args: UpdateArticleInput
-): Promise<Partial<ArticleDocument>> => {
+const updateArticle = async (_: any, args: UpdateArticleInput): Promise<Partial<ArticleDocument>> => {
   const { id, ...rest } = args
   const results = await client.update<ArticleDocument>({
     index: ARTICLE_INDEX,

@@ -6,18 +6,11 @@ import User, { AccountInput } from '../../models/user'
 import { ServerErrorCode } from '../../utils/errors'
 import { CredentialsInput, Tokens } from './../../models/user'
 import { authenticated, IContext } from './../../utils/graphql'
-import {
-  INVALID_INPUT_MESSAGE,
-  isValidEmail,
-  isValidPassword,
-} from './../../utils/validators'
+import { INVALID_INPUT_MESSAGE, isValidEmail, isValidPassword } from './../../utils/validators'
 
 const SALT_ROUNDS = 10
 
-const register = async (
-  _: any,
-  { input }: { input: AccountInput }
-): Promise<User> => {
+const register = async (_: any, { input }: { input: AccountInput }): Promise<User> => {
   const { email, firstName, lastName, fullName, password } = input
   if (!isValidEmail(email)) {
     throw new GraphQLError(INVALID_INPUT_MESSAGE, {
@@ -59,10 +52,7 @@ const register = async (
   return userInstance
 }
 
-const login = async (
-  _: any,
-  { input }: { input: CredentialsInput }
-): Promise<Tokens> => {
+const login = async (_: any, { input }: { input: CredentialsInput }): Promise<Tokens> => {
   const { email, password } = input
   if (!isValidEmail(email)) {
     throw new GraphQLError(INVALID_INPUT_MESSAGE, {
@@ -103,53 +93,31 @@ const login = async (
     payload,
     process.env.REFRESH_TOKEN_PRIVATE_KEY as string, // must have
     {
-      expiresIn:
-        Number(process.env.REFRESH_TOKEN_EXPIRE_TIME ?? 24 * 60 * 30) *
-        60 *
-        1000, // milliseconds
+      expiresIn: Number(process.env.REFRESH_TOKEN_EXPIRE_TIME ?? 24 * 60 * 30) * 60 * 1000, // milliseconds
     }
   )
 
   return {
     accessToken,
     refreshToken,
-    expiresAt: addMinutes(
-      Date.now(),
-      Number(process.env.ACCESS_TOKEN_EXPIRE_TIME ?? 15)
-    ),
+    expiresAt: addMinutes(Date.now(), Number(process.env.ACCESS_TOKEN_EXPIRE_TIME ?? 15)),
   }
 }
 
-const getNewToken = async (
-  _: any,
-  { refreshToken }: { refreshToken: string }
-): Promise<Tokens> => {
+const getNewToken = async (_: any, { refreshToken }: { refreshToken: string }): Promise<Tokens> => {
   // verify refresh token
-  const payload = await jwt.verify(
-    refreshToken,
-    process.env.REFRESH_TOKEN_PRIVATE_KEY as string
-  )
+  const payload = await jwt.verify(refreshToken, process.env.REFRESH_TOKEN_PRIVATE_KEY as string)
   // in case refreshToken is valid
-  const newAccessToken = jwt.sign(
-    payload,
-    process.env.ACCESS_TOKEN_PRIVATE_KEY as string
-  )
+  const newAccessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_PRIVATE_KEY as string)
 
   return {
     accessToken: newAccessToken,
     refreshToken,
-    expiresAt: addMinutes(
-      Date.now(),
-      Number(process.env.ACCESS_TOKEN_EXPIRE_TIME ?? 15)
-    ),
+    expiresAt: addMinutes(Date.now(), Number(process.env.ACCESS_TOKEN_EXPIRE_TIME ?? 15)),
   }
 }
 
-const me = async (
-  _: unknown,
-  __: unknown,
-  context: IContext
-): Promise<User> => {
+const me = async (_: unknown, __: unknown, context: IContext): Promise<User> => {
   const userId = context.user?.id
   const userInstance = await User.findByPk(userId)
 

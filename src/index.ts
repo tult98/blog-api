@@ -4,13 +4,7 @@ import { resolvers, typeDefs } from './graphql'
 import { checkConnection } from './services/eslastic'
 import { getUserFromToken, IContext } from './utils/graphql'
 
-async function startApolloServer({
-  typeDefs,
-  resolvers,
-}: {
-  typeDefs: string
-  resolvers: any
-}) {
+async function startApolloServer({ typeDefs, resolvers }: { typeDefs: string; resolvers: any }) {
   const server = new ApolloServer<IContext>({
     typeDefs,
     resolvers,

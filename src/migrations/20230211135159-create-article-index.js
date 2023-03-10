@@ -18,7 +18,7 @@ module.exports = {
           slug: { type: 'keyword' },
           preface: { type: 'text' },
           thumbnail: { type: 'text' },
-          body: { type: 'text' },
+          content: { type: 'text' },
           category: { type: 'keyword' },
           tags: { type: 'keyword' },
           createdAt: { type: 'date' },

@@ -13,13 +13,12 @@ export const enum ROLE {
   ADMIN = 2,
 }
 
-export interface UserInput {
+export interface AccountInput {
   email: string
   firstName: string
   lastName: string
   fullName: string
   password: string
-  confirmPassword: string
 }
 
 export interface UserInstance {
@@ -33,12 +32,12 @@ export interface UserInstance {
   updatedAt: Date | string
 }
 
-export interface LoginInput {
+export interface CredentialsInput {
   email: string
   password: string
 }
 
-export interface LoginToken {
+export interface Tokens {
   accessToken: string
   refreshToken: string
   expiresAt: Date

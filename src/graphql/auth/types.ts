@@ -10,9 +10,22 @@ export const types = `#graphql
     updatedAt: Date!
   }
 
-  type LoginToken {
+  type Tokens {
     accessToken: String!,
     refreshToken: String!
     expiresAt: Date!
+  }
+
+  input AccountInput {
+    email: String!
+    firstName: String!
+    lastName: String!
+    fullName: String!
+    password: String!
+  }
+
+  input CredentialsInput {
+    email: String!
+    password: String!
   }
 `

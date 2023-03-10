@@ -2,9 +2,9 @@ import bcrypt from 'bcrypt'
 import { addMinutes } from 'date-fns'
 import { GraphQLError } from 'graphql'
 import jwt from 'jsonwebtoken'
-import User, { UserInput } from '../../models/user'
+import User, { AccountInput } from '../../models/user'
 import { ServerErrorCode } from '../../utils/errors'
-import { LoginInput, LoginToken } from './../../models/user'
+import { CredentialsInput, Tokens } from './../../models/user'
 import { authenticated, IContext } from './../../utils/graphql'
 import {
   INVALID_INPUT_MESSAGE,
@@ -14,9 +14,11 @@ import {
 
 const SALT_ROUNDS = 10
 
-const register = async (_: any, args: UserInput): Promise<User> => {
-  const { email, firstName, lastName, fullName, password, confirmPassword } =
-    args
+const register = async (
+  _: any,
+  { input }: { input: AccountInput }
+): Promise<User> => {
+  const { email, firstName, lastName, fullName, password } = input
   if (!isValidEmail(email)) {
     throw new GraphQLError(INVALID_INPUT_MESSAGE, {
       extensions: {
@@ -26,14 +28,6 @@ const register = async (_: any, args: UserInput): Promise<User> => {
     })
   }
 
-  if (password !== confirmPassword) {
-    throw new GraphQLError(INVALID_INPUT_MESSAGE, {
-      extensions: {
-        code: ServerErrorCode.BAD_USER_INPUT,
-        field: 'confirmPassword',
-      },
-    })
-  }
   if (!isValidPassword(password)) {
     throw new GraphQLError('Password is too weak', {
       extensions: {
@@ -65,8 +59,11 @@ const register = async (_: any, args: UserInput): Promise<User> => {
   return userInstance
 }
 
-const login = async (_: any, args: LoginInput): Promise<LoginToken> => {
-  const { email, password } = args
+const login = async (
+  _: any,
+  { input }: { input: CredentialsInput }
+): Promise<Tokens> => {
+  const { email, password } = input
   if (!isValidEmail(email)) {
     throw new GraphQLError(INVALID_INPUT_MESSAGE, {
       extensions: {
@@ -126,7 +123,7 @@ const login = async (_: any, args: LoginInput): Promise<LoginToken> => {
 const getNewToken = async (
   _: any,
   { refreshToken }: { refreshToken: string }
-): Promise<LoginToken> => {
+): Promise<Tokens> => {
   // verify refresh token
   const payload = await jwt.verify(
     refreshToken,

@@ -1,9 +1,11 @@
+import { SearchTotalHits } from '@elastic/elasticsearch/lib/api/typesWithBodyKey'
 import { v4 as uuidv4 } from 'uuid'
 import { IMeta } from '../../models'
 import { ROLE } from '../../models/user'
 import { authenticated, authorized } from '../../utils/graphql'
 import { ArticleDocument, ArticleInput, UpdateArticleInput } from './../../models/article'
 import { client } from './../../services/eslastic'
+import { createPresignedUrlWithClient } from './../../services/s3'
 
 const ARTICLE_INDEX = 'articles'
 
@@ -71,13 +73,18 @@ const getArticles = async (): Promise<{
 
   return {
     articles,
-    // @ts-expect-error
-    meta: { total: results?.hits?.total?.value ?? 0 },
+    meta: { total: (results.hits.total as SearchTotalHits).value ?? 0 },
   }
+}
+
+const getPresignedUrl = async (_: any, { filename }: { filename: string }): Promise<string> => {
+  const presignedUrl = createPresignedUrlWithClient(filename)
+  return presignedUrl
 }
 
 const queries = {
   getArticles,
+  getPresignedUrl,
 }
 
 const mutations = {

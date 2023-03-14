@@ -17,16 +17,3 @@ export interface ArticleDocument extends ArticleInput {
   createdAt: Date
   updatedAt: Date
 }
-
-// export interface ArticleDocument {
-//   _id?: string
-//   title?: string
-//   slug?: string
-//   thumbnail?: string
-//   preface?: string
-//   body?: string
-//   category?: string
-//   tags?: string[]
-//   createdAt?: Date
-//   updatedAt?: Date
-// }

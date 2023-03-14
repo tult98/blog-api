@@ -17,6 +17,8 @@
   "description": "Graphql server for my blog",
   "dependencies": {
     "@apollo/server": "^4.3.0",
+    "@aws-sdk/client-s3": "^3.290.0",
+    "@aws-sdk/s3-request-presigner": "^3.290.0",
     "@elastic/elasticsearch": "^8.6.0",
     "bcrypt": "^5.1.0",
     "date-fns": "^2.29.3",

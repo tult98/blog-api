@@ -77,19 +77,26 @@ const getArticles = async (): Promise<{
   }
 }
 
-const getPresignedUrl = async (_: any, { filename }: { filename: string }): Promise<string> => {
-  const presignedUrl = createPresignedUrlWithClient(filename)
-  return presignedUrl
+const createPresignedUrls = async (
+  _: any,
+  { filenames }: { filenames: string[] }
+): Promise<{ presignedUrls: string[] }> => {
+  const presignedUrls = await Promise.all(
+    filenames.map(async (filename) => {
+      return await createPresignedUrlWithClient(filename)
+    })
+  )
+  return { presignedUrls }
 }
 
 const queries = {
   getArticles,
-  getPresignedUrl,
 }
 
 const mutations = {
   createArticle: authenticated(authorized(ROLE.ADMIN)(createArticle)),
   updateArticle: authenticated(authorized(ROLE.ADMIN)(updateArticle)),
+  createPresignedUrls,
 }
 
 export const resolvers = { queries, mutations }

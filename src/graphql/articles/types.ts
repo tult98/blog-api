@@ -20,4 +20,8 @@ export const types = `#graphql
     articles: [Article!]!,
     meta: Meta!
   }
+
+  type PresignedUrls {
+    presignedUrl: [String]!
+  }
 `

@@ -22,6 +22,6 @@ export const types = `#graphql
   }
 
   type PresignedUrls {
-    presignedUrl: [String]!
+    presignedUrls: [String]!
   }
 `

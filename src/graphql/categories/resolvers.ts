@@ -2,7 +2,7 @@ import { SearchTotalHits } from '@elastic/elasticsearch/lib/api/typesWithBodyKey
 import { GraphQLError } from 'graphql'
 import { v4 as uuidv4 } from 'uuid'
 import { ROLE } from '../../models/user'
-import { client } from '../../services/eslastic'
+import { client } from '../../services/elastic'
 import { ServerErrorCode } from '../../utils/errors'
 import { authenticated, authorized } from '../../utils/graphql'
 import { CategoryDocument, CategoryInput } from './../../models/category'

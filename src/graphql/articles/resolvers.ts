@@ -4,7 +4,7 @@ import { IMeta } from '../../models'
 import { ROLE } from '../../models/user'
 import { authenticated, authorized } from '../../utils/graphql'
 import { ArticleDocument, ArticleInput, UpdateArticleInput } from './../../models/article'
-import { client } from './../../services/eslastic'
+import { client } from '../../services/elastic'
 import { createPresignedUrlWithClient } from './../../services/s3'
 
 const ARTICLE_INDEX = 'articles'
